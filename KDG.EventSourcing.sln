@@ -1,0 +1,30 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KDG.EventSourcing", "KDG.EventSourcing\KDG.EventSourcing.csproj", "{FE550EB5-F5D0-45C2-2625-7C4112FEB124}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KDG.EventSourcing.Tests", "KDG.EventSourcing.Tests\KDG.EventSourcing.Tests.csproj", "{E8654C08-AB86-4AB9-915F-991BAA66396D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE550EB5-F5D0-45C2-2625-7C4112FEB124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE550EB5-F5D0-45C2-2625-7C4112FEB124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE550EB5-F5D0-45C2-2625-7C4112FEB124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE550EB5-F5D0-45C2-2625-7C4112FEB124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8654C08-AB86-4AB9-915F-991BAA66396D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8654C08-AB86-4AB9-915F-991BAA66396D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8654C08-AB86-4AB9-915F-991BAA66396D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8654C08-AB86-4AB9-915F-991BAA66396D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC66A410-8B81-468C-8DBE-80A5012458DE}
+	EndGlobalSection
+EndGlobal
