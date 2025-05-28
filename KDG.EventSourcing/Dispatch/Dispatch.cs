@@ -51,7 +51,7 @@ namespace KDG.EventSourcing.Dispatch
 
         public async Task<O> Dispatch<I,O>(IEvent<I,O> e, Guid user, I input) where O : class
         {
-            return await _db.withTransaction(async (transaction) => {
+            return await _db.WithTransaction(async (transaction) => {
                 var eventData = new EventData<I>()
                 {
                     Transaction = transaction,
