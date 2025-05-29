@@ -16,13 +16,20 @@ public class DispatcherTests
         [LogDelta] public int FieldB { get; set; }
         [LogDelta] public DateTime FieldC { get; set; }
         public string FieldD { get; set; } = string.Empty;
+        public RelatedTestModel? Related { get; set; }
+    }
+
+    public class RelatedTestModel
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 
     class TestEvent : IEvent<TestModel, TestModel>
     {
         public EventDelta Delta(TestModel? original, TestModel output)
         {
-            return ((IEvent<TestModel, TestModel>) this).FindDeltas(original, output, [], "1");
+            return ((IEvent<TestModel, TestModel>)this).FindDeltas(original, output, [], [], "1");
         }
 
         public EventEntities Entities(TestModel data)
@@ -129,4 +136,29 @@ public class DispatcherTests
         Assert.NotEqual(oldModel.FieldD, newModel.FieldD);
         Assert.Equivalent(expected, actual);
     }
+
+    [Fact]
+    public void GetMappedValue_ReturnsExpected()
+    {
+        var relatedId = Guid.NewGuid();
+        var model = new TestModel
+        {
+            Related = new RelatedTestModel
+            {
+                Id = relatedId,
+                Name = "Related thing",
+            }
+        };
+
+        var relatedProp = typeof(TestModel).GetProperty(nameof(TestModel.Related));
+        var valueMappings = new ValueMapping<TestModel> {
+            { nameof(TestModel.Related), x => x.Related?.Id.ToString() ?? string.Empty },
+        };
+        var displayMappings = new ValueMapping<TestModel> {
+            { nameof(TestModel.Related), x => x.Related?.Name.ToString() ?? string.Empty },
+        };
+
+        Assert.Equal(relatedId.ToString(), valueMappings.GetMappedValue(relatedProp!, model));
+        Assert.Equal("Related thing", displayMappings.GetMappedValue(relatedProp!, model));
+    } 
 }
