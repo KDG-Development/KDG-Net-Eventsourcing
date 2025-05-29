@@ -4,6 +4,6 @@ namespace KDG.EventSourcing.Dispatch
 {
     public interface IDispatcher
     {
-        Task<O> Dispatch<I, O>(IEvent<I, O> e, Guid user, I data) where O : class;
+        Task<O> Dispatch<I, O>(IEvent<I, O> e, Guid user, I data, bool logEmptyDeltas = true) where O : class;
     }
 }
