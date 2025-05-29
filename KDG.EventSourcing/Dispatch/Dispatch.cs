@@ -39,19 +39,24 @@ namespace KDG.EventSourcing.Dispatch
             });
         }
 
-        private async Task<O> Execute<I,O>(NpgsqlTransaction transaction, IEvent<I,O> dispatcherEvent, EventData<I> data) where O : class
+        private async Task<O> Execute<I,O>(NpgsqlTransaction transaction, IEvent<I,O> dispatcherEvent, EventData<I> data, bool logEmptyDeltas) where O : class
         {
             var original = await dispatcherEvent.GetOriginal(data);
             var result = await dispatcherEvent.Execute(data);
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(dispatcherEvent.Delta(original,result),_serializerSettings);
-            await LogEvent(transaction,data, json);
+            var delta = dispatcherEvent.Delta(original, result);
+            // Prevent spamming the log with updates that didn't actually change anything.
+            if (delta.Deltas.Count > 0 || logEmptyDeltas)
+            {
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(delta, _serializerSettings);
+                await LogEvent(transaction, data, json);
+            }
 
             return result;
         }
 
-        public async Task<O> Dispatch<I,O>(IEvent<I,O> e, Guid user, I input) where O : class
+        public async Task<O> Dispatch<I,O>(IEvent<I,O> e, Guid user, I input, bool logEmptyDeltas = true) where O : class
         {
-            return await _db.withTransaction(async (transaction) => {
+            return await _db.WithTransaction(async (transaction) => {
                 var eventData = new EventData<I>()
                 {
                     Transaction = transaction,
@@ -61,7 +66,7 @@ namespace KDG.EventSourcing.Dispatch
                     User = user,
                     Data = input,
                 };
-                return await Execute(transaction,e, eventData);
+                return await Execute(transaction,e, eventData, logEmptyDeltas);
             });
         }
     }
